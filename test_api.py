@@ -1,7 +1,7 @@
 # test_api.py
 import os
 import pytest
-from logic import get_next_trip, post_request
+from logic import   post_request, update_trip
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +20,7 @@ def test_addTrip_Planning():
 def test_addTrip():
     url = os.getenv("API_addTrip")
     data = {
-        "trip": get_next_trip(),
+        "trip": update_trip(),
         "planta": "PTA 1 (CD)",
         "tipoCarga": "CARGA REGULAR",
         "tipoCaja":"CAJA SECA",
@@ -32,7 +32,7 @@ def test_addTrip():
     }
     post_request(url, data)
 
-#Post steagingEvent
+#Post stagingEvent
 def test_stagingEvent():
     url = os.getenv("API_stagingEvent")
     data = {
