@@ -1,8 +1,9 @@
 # test_api.py
 import os
-from logic import   post_request, update_trip
+from integration_tests.logic import   post_request, update_trip
 from dotenv import load_dotenv
 import random
+import pytest
 
 load_dotenv()
 
@@ -15,6 +16,16 @@ def test_addTrip_Planning():
         "fecha": "2024-11-11"
     }
     post_request(url, data)
+"""
+    This test checks the functionality of adding a trip with various parameters.
+    It uses parameterization to send different combinations of 'planta', 'tipoCarga',
+    'tipoCaja', and 'tipoTurno' to the API.
+"""
+
+@pytest.mark.parametrize("planta", ["PTA 1 (CD)", "Plant 4", "PTA 5 (CD)"])
+@pytest.mark.parametrize("tipoCarga", ["Carga regular", "Carga lateral"])   
+@pytest.mark.parametrize("tipoCaja", ["Caja seca", "Plataforma"])
+@pytest.mark.parametrize("tipoTurno", ["Exportación", "Grupo Comercial", "Nacional", "Recibo mercancía"])
 
 #Post addTrip
 def test_addTrip():
