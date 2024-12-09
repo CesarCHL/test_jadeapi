@@ -16,34 +16,41 @@ def test_addTrip_Planning():
         "fecha": "2024-11-11"
     }
     post_request(url, data)
-"""
-    This test checks the functionality of adding a trip with various parameters.
-    It uses parameterization to send different combinations of 'planta', 'tipoCarga',
-    'tipoCaja', and 'tipoTurno' to the API.
-"""
+    
+    
+class Plant:
+    def __init__(self, name, area_carga="EXPLANADA/BODEGA"):
+        self.name = name
+        self.area_carga = area_carga
 
-@pytest.mark.parametrize("planta", ["PTA 1 (CD)", "Plant 4", "PTA 5 (CD)"])
+    def create_trip_data(self, trip, tipo_carga, tipo_caja, tipo_turno):
+        return {
+            "trip": trip,
+            "planta": self.name,
+            "tipoCarga": tipo_carga,
+            "tipoCaja": tipo_caja,
+            "areaCarga": self.area_carga,
+            "turno": "2",
+            "tipoTurno": tipo_turno,
+            "carrier": "Carrier 2",
+            "driver": "Driver 2",
+        }
+
+@pytest.mark.parametrize("plant", [
+    Plant("PTA 1 (CD)"),
+    Plant("Plant 4"),
+    Plant("PTA 5 (CD)")
+])
 @pytest.mark.parametrize("tipoCarga", ["Carga regular", "Carga lateral"])   
 @pytest.mark.parametrize("tipoCaja", ["Caja seca", "Plataforma"])
 @pytest.mark.parametrize("tipoTurno", ["Exportación", "Grupo Comercial", "Nacional", "Recibo mercancía"])
 
-#Post addTrip
-def test_addTrip():
+def test_addTrip(plant, tipoCarga, tipoCaja, tipoTurno):
     url = os.getenv("API_addTrip")
-    data = { 
-        "trip": update_trip(),
-        "planta": random.choice(["PTA 1 (CD)", "Plant 4", "PTA 5 (CD)"] ),
-        "tipoCarga": random.choice(["Carga regular", "Carga lateral"]),
-        "tipoCaja": random.choice(["Caja seca", "Plataforma"]),
-        "areaCarga": "EXPLANADA/BODEGA",
-        "turno": "2",
-        "tipoTurno": random.choice(["Exportación", "Grupo Comercial", "Nacional", "Recibo mercancía"]),
-        "carrier": "Carrier 2",
-        "driver": "Driver 2"
-    }
+    data = plant.create_trip_data(update_trip(), tipo_carga=tipoCarga, tipo_caja=tipoCaja, tipo_turno=tipoTurno)
     post_request(url, data)
-    expected_values = ["PTA 1 (CD)", "Plant 4", "PTA 5 (CD)"]
-    assert data in expected_values, f"Unexpected value: {data}"
+    expected_plants = ["PTA 1 (CD)", "Plant 4", "PTA 5 (CD)"]
+    assert data["planta"] in expected_plants, f"Unexpected value: {data['planta']}"
 
 
 #Post stagingEvent
@@ -74,3 +81,5 @@ def test_stagingEvent():
 
 if __name__ == "__main__":
     test_addTrip()
+
+    

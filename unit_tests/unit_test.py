@@ -1,2 +1,3 @@
 #Mock the API call to test parameters are working, show log of each mocked post 
-from integration_tests.test_api import post_request, 
+from integration_tests.test_api import post_request, update_trip
+from unittest.mock import patch
