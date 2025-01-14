@@ -28,7 +28,6 @@ def update_trip():
 def post_request(url: str, data: Dict):
     response = requests.post(url, json=data)
     print(f"Response status code: {response.status_code}")
-    print(f"Response content: {response.json}")
     assert  response.status_code in [200, 201]
     return response.json()
     
