@@ -35,7 +35,7 @@ print(f"You selected: {selected_plant}")
 def add_trip_planning(planta):
     url = os.getenv("API_tripPlanning")
     data = {
-        "trip": update_trip,
+        "trip": trip_id,
         "planta": planta,
         "fecha": datetime.datetime.now().strftime("%Y-%m-%d")
     }
@@ -62,7 +62,7 @@ def process_trip(planta, area, combination):
     trip_id = update_trip()
     try:
         logging.info(f"Processing trip for planta: {planta}, area: {area}, combination: {combination}, trip {trip_id}")
-        add_trip(update_trip(), planta, *combination, area)
+        add_trip(trip_id, planta, *combination, area)
         logging.info(f"Successfully processed trip for planta: {planta}, area: {area}, combination: {combination}, trip {trip_id}")
     except Exception as e:
         logging.error(f"Error processing trip for planta: {planta}, area: {area}, combination: {combination}. Error: {e}")
