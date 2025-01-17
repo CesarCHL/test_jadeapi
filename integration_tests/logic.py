@@ -30,4 +30,5 @@ def post_request(url: str, data: Dict):
     print(f"Response status code: {response.status_code}")
     assert  response.status_code in [200, 201]
     return response.json()
+
     

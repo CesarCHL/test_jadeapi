@@ -17,20 +17,20 @@ tipo_carga = ["Carga regular", "Carga lateral"]
 tipo_caja = ["Caja seca", "Plataforma"]
 
 # Plant selection menu
-def select_plant():
-    print("Select a plant")
-    selected_plant = int(input("Introduce the plant number:\n1. PTA 1 (CD) = 1\n2. Plant 4 = 2\n3. PTA 5 (CD) = 3\n4. All plants = 4\n"))
+# def select_plant():
+    # print("Select a plant")
+    # selected_plant = int(input("Introduce the plant number:\n1. PTA 1 (CD) = 1\n2. Plant 4 = 2\n3. PTA 5 (CD) = 3\n4. All plants = 4\n"))
     # Verifica que la opción esté en el rango válido
-    if 1 <= selected_plant <= len(plantas):
-        return plantas[selected_plant - 1]
-    elif selected_plant == 4:
-        return "All plants"
-    else:
-        print("Invalid selection. Please try again.")
-        return select_plant()  
+    # if 1 <= selected_plant <= len(plantas):
+        # return plantas[selected_plant - 1]
+    # elif selected_plant == 4:
+        # return "All plants"
+    # else:
+        # print("Invalid selection. Please try again.")
+        # return select_plant()  
 
-selected_plant = select_plant()
-print(f"You selected: {selected_plant}")
+# selected_plant = select_plant()
+# print(f"You selected: {selected_plant}")
 
 def add_trip_planning(planta):
     url = os.getenv("API_tripPlanning")
@@ -76,13 +76,21 @@ for planta in plantas:
 def update_sensors(plant_name, sensores_count):
     url = os.getenv("API_stagingEvent")
     speedupdate = input("Update sensors now? (s/n): ")
-    if speedupdate.lower == "s":
+    if speedupdate.lower() == "s":
         time.sleep(0)
     else:
         update_time = int(input("Enter time to wait before updating sensors in seconds: "))
         time.sleep(update_time)
+    
     sensors_status = [{"number": i + 1, "status": 0} for i in range(sensores_count)]
-    return sensors_status
+    
+    data = {
+        "plant_name": plant_name,
+        "sensors_status": sensors_status
+    }
+    
+    response = post_request(url, data=data)
+    return response
 
 plant_sensor_lines = {
     "PTA 1 (CD)": 12,
